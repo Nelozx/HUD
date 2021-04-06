@@ -1,0 +1,27 @@
+#source 'https://git.saloontech.com/iOS/Share-Pods/Specs.git'
+
+
+
+use_frameworks!
+
+platform :ios, '11.0'
+
+target 'SLHUD_Example' do
+  pod 'SLHUD', :path => '../'
+  
+  target 'SLHUD_Tests' do
+  
+  pod 'Quick'
+  pod 'Nimble'
+  
+  end
+
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+        end
+    end
+end
