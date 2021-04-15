@@ -59,7 +59,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     defer {
       switch indexPath.row {
-      case 3, 4, 5:
+      case 2, 3, 4, 5:
         DispatchQueue.main.asyncAfter(deadline: .now()+3.5) {
           HUD.dismiss()
         }
@@ -79,8 +79,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     case 2:
       let view = UIView()
       view.backgroundColor = .cyan
-      view.bounds.size = CGSize(width: 100, height: 100)
-      HUD.show(.custom(view))
+      HUD.show(.custom(view, size: CGSize(width: 200, height: 200)))
     case 3:
       HUD.show(.loading(desc: "加载中..."))
     case 4:
@@ -120,7 +119,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
       HUD.show(.succeed())
       return
     }
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
       progressView.progress += 10
       self.run(with: progressView)
     }

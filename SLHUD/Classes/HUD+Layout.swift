@@ -8,8 +8,6 @@
 extension HUD {
   
   func makeConstraints() {
-  
-    print(superview)
     guard let superview = superview,
           let contentView = contentView else {return}
     if style.isInteraction {
@@ -36,6 +34,14 @@ extension HUD {
       ])
     }
     makeCommonConstraints()
+  }
+  
+  func makeCustomViewConstraints(size: CGSize) {
+    guard let contentView = contentView else {return}
+    NSLayoutConstraint.activate([
+      contentView.widthAnchor.constraint(equalToConstant: size.width),
+      contentView.heightAnchor.constraint(equalToConstant: size.height),
+    ])
   }
   
   private func makeCommonConstraints() {

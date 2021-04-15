@@ -29,7 +29,7 @@ extension HUD {
     case toast(_ desc: String)
     case loading(_ type: LoadingType = .default, desc: String = "")
     case progress(_ style: ProgressView.Style = .default, handler: ProgressView.ProgressViewHandler)
-    case custom(_ view: UIView)
+    case custom(_ view: UIView, size: CGSize)
     case succeed(_ desc: String = "")
     case error(_ desc: String = "")
     case warning(_ desc: String = "")
@@ -98,10 +98,7 @@ extension HUD {
   }
 
   private func show(_ case: Case, for superView: UIView, style: Style) {
-    if contentView != nil {
-      contentView?.removeFromSuperview()
-      timer?.invalidate()
-    }
+    if contentView != nil { destroyHUD()}
     self.case = `case`
     self.style = style
     superView.addSubview(self)
@@ -133,9 +130,11 @@ extension HUD {
       makeContentView()
     case .progress:
       makeContentView()
-    case .custom(let contentView):
+    case .custom(let contentView, let size):
+      contentView.translatesAutoresizingMaskIntoConstraints = false
       self.contentView = contentView
       addSubview(contentView)
+      makeCustomViewConstraints(size: size)
       makeConstraints()
     }
     animation()
@@ -158,6 +157,8 @@ extension HUD {
     case .toast:
       contentView.layer.cornerRadius = style.cornerRadius ??
         (contentView.bounds.size.height * 0.5)
+    case .custom:
+      break
     default:
       contentView.layer.cornerRadius = style.cornerRadius ?? 5
     }
@@ -172,13 +173,13 @@ extension HUD {
   
   private func setupNotifications() {
     
-    //    if (coverView == nil) {
-    NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardWillShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardWillHide, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardDidShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardDidHide, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: orientationDidChange, object: nil)
-    //    }
+    if !style.isInteraction {
+      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardWillShow, object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardWillHide, object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardDidShow, object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardDidHide, object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: orientationDidChange, object: nil)
+    }
   }
   
   @objc private func handlerPosition(_ notification: Notification? = nil) {
