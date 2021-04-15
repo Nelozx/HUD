@@ -10,7 +10,6 @@ target 'SLHUD_Example' do
   pod 'SLHUD', :path => '../'
 #  pod 'LookinServer'
   target 'SLHUD_Tests' do
-  
   pod 'Quick'
   pod 'Nimble'
   

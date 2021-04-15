@@ -9,13 +9,11 @@ import UIKit
 
 class IconsContainer: UIStackView {
   lazy var gifView: UIImageView = {
-    UIImageView()
+    let gifView = UIImageView()
+    gifView.translatesAutoresizingMaskIntoConstraints = false
+    return gifView
   }()
-  
-  lazy var label: UILabel = {
-    return UILabel()
-  }()
-  
+
   lazy var animateView: UIView = {
     let animateView = UIView()
     animateView.translatesAutoresizingMaskIntoConstraints = false
@@ -27,9 +25,17 @@ class IconsContainer: UIStackView {
     activityView.translatesAutoresizingMaskIntoConstraints = false
     activityView.style = .whiteLarge
     activityView.startAnimating()
+    activityView.color = style.iconColor
     return activityView
   }()
   
+  lazy var progressView: ProgressView = {
+    let progressView = ProgressView()
+    progressView.translatesAutoresizingMaskIntoConstraints = false
+    return ProgressView()
+  }()
+
+
   override init(frame: CGRect) {
     super.init(frame: frame)
   }
@@ -40,22 +46,39 @@ class IconsContainer: UIStackView {
     self.init(frame: CGRect.zero)
     translatesAutoresizingMaskIntoConstraints = false
   }
+  
+  var style: HUD.Style = .default
 }
 
 extension IconsContainer {
-  func show(_ case: HUD.Case) {
-    subviews.forEach { $0.removeFromSuperview() }
+  func show(_ case: HUD.Case, style: HUD.Style) {
     spacing = 10
     switch `case` {
-    case .activity(let type, _):
+    case .loading(let type, _):
       makeActivity(type)
       break
+    case .succeed:
+      addArrangedSubview(animateView)
+      makeAnimatinViewConstraints()
+      layoutIfNeeded()
+      animatedIconSucceed(animateView)
+    case .error:
+      addArrangedSubview(animateView)
+      makeAnimatinViewConstraints()
+      layoutIfNeeded()
+      animatedIconFailed(animateView)
+    case .progress(let style, let handler):
+      progressView.model = style
+      progressView.handler = handler
+      addArrangedSubview(progressView)
+      makeProgressViewConstraints()
+      
     default:
       break
     }
   }
   
-  func makeActivity(_ type: HUD.IndicatorType)  {
+  func makeActivity(_ type: HUD.LoadingType)  {
     switch type {
     case .default:
       addArrangedSubview(activityView)
