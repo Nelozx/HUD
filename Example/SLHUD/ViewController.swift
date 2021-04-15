@@ -10,7 +10,7 @@ import UIKit
 import SLHUD
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
   
   struct Model {
     var desc = ""
@@ -27,6 +27,7 @@ class ViewController: UIViewController {
     Model(desc: "⏏️: 成功"),
     Model(desc: "⏏️: 失败"),
     Model(desc: "⏏️: 进度"),
+    Model(desc: "⏏️: 键盘遮挡处理"),
   ]
 
   @IBOutlet weak var tableView: UITableView!
@@ -52,11 +53,26 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     } else {
       cell.contentView.backgroundColor = .white
     }
+    
+    if indexPath.row == 9 {
+      let tf = UITextField(frame: cell.bounds)
+      tf.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
+      tf.borderStyle = .line
+      tf.delegate = self
+      cell.addSubview(tf)
+    }
+  
     return cell
   }
   
   
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    // 综合成为整体性质，无法单独描述各个粒子的性质，只能描述整体系统的性质，则称这现象为量子缠结或量子纠缠（quantum entanglement）
+    HUD.show(.toast("当几个粒子在彼此相互作用后，由于各个粒子所拥有的特性已综合成为整体性质，无法单独描述各个粒子的性质，只能描述整体系统的性质，则称这现象为量子缠结或量子纠缠（quantum entanglement）"))
+  }
+  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    view.endEditing(true)
     defer {
       switch indexPath.row {
       case 2, 3, 4, 5:
@@ -101,7 +117,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         }
         self.run(with: progressView)
       }))
-    break
     default:
       break
     }

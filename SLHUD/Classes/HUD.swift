@@ -96,7 +96,7 @@ extension HUD {
       self?.animation(isRemove: true)
     }
   }
-
+  
   private func show(_ case: Case, for superView: UIView, style: Style) {
     if contentView != nil { destroyHUD()}
     self.case = `case`
@@ -106,7 +106,7 @@ extension HUD {
     setupUI()
     autoDisssCase()
   }
-
+  
   private func autoDisssCase() {
     switch `case` {
     case .toast, .succeed, .info, .warning, .error:
@@ -196,19 +196,41 @@ extension HUD {
       } else if (notification.name == keyboardWillHide) || (notification.name == keyboardDidHide) {
         heightKeyboard = 0
       } else {
-//        heightKeyboard = keyboardHeight()
+        heightKeyboard = keyboardHeight()
       }
     } else {
-//      heightKeyboard = keyboardHeight()
+      heightKeyboard = keyboardHeight()
     }
     
     let screen = UIScreen.main.bounds
     let center = CGPoint(x: screen.size.width/2, y: (screen.size.height-heightKeyboard)/2)
     
     UIView.animate(withDuration: animationDuration, delay: 0, options: .allowUserInteraction, animations: {
-      //      self.toolbarHUD?.center = center
-      //      self.viewBackground?.frame = screen
+      self.center = center
     }, completion: nil)
+  }
+  
+  private func keyboardHeight() -> CGFloat {
+    
+    if let keyboardWindowClass = NSClassFromString("UIRemoteKeyboardWindow"),
+       let inputSetContainerView = NSClassFromString("UIInputSetContainerView"),
+       let inputSetHostView = NSClassFromString("UIInputSetHostView") {
+      
+      for window in UIApplication.shared.windows {
+        if window.isKind(of: keyboardWindowClass) {
+          for firstSubView in window.subviews {
+            if firstSubView.isKind(of: inputSetContainerView) {
+              for secondSubView in firstSubView.subviews {
+                if secondSubView.isKind(of: inputSetHostView) {
+                  return secondSubView.frame.size.height
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return 0
   }
   
 }
