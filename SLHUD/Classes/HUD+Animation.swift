@@ -35,7 +35,20 @@ extension HUD {
 }
 
 extension IconsContainer {
-  func animationCircleStrokeSpin(_ view: UIView) {
+  
+  func animate(with type: HUD.LoadingType, in view: UIView) {
+    switch type {
+    case .lineScaling:
+      lineScalingAnimation(in: view)
+    case .ring:
+      ringAnimation(in: view)
+    case .singleCirclePulse:
+      singleCirclePulseAnimation(in: view)
+    default: break
+    }
+  }
+  
+  private func ringAnimation(in view: UIView) {
     let width = view.frame.size.width
     let itemWidth = view.frame.size.width * 0.8
     let itemHeight = itemWidth
@@ -82,7 +95,7 @@ extension IconsContainer {
     view.layer.addSublayer(layer)
   }
   
-  func animationLineScaling(_ view: UIView) {
+  func lineScalingAnimation(in view: UIView) {
 
     let width = view.frame.size.width 
     let height = view.frame.size.height
@@ -184,5 +197,40 @@ extension IconsContainer {
       layer.add(animation, forKey: "animation")
       view.layer.addSublayer(layer)
     }
+  }
+  
+  private func singleCirclePulseAnimation(in view: UIView) {
+
+    let width = view.frame.size.width
+    let height = view.frame.size.height
+
+    let duration: CFTimeInterval = 1.0
+
+    let animationScale = CABasicAnimation(keyPath: "transform.scale")
+    animationScale.duration = duration
+    animationScale.fromValue = 0
+    animationScale.toValue = 1
+
+    let animationOpacity = CABasicAnimation(keyPath: "opacity")
+    animationOpacity.duration = duration
+    animationOpacity.fromValue = 1
+    animationOpacity.toValue = 0
+
+    let animation = CAAnimationGroup()
+    animation.animations = [animationScale, animationOpacity]
+    animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+    animation.duration = duration
+    animation.repeatCount = HUGE
+    animation.isRemovedOnCompletion = false
+
+    let path = UIBezierPath(arcCenter: CGPoint(x: width/2, y: height/2), radius: width/2, startAngle: 0, endAngle: 2 * .pi, clockwise: false)
+
+    let layer = CAShapeLayer()
+    layer.frame = CGRect(x: 0, y: 0, width: width, height: height)
+    layer.path = path.cgPath
+    layer.fillColor = style.iconColor.cgColor
+
+    layer.add(animation, forKey: "animation")
+    view.layer.addSublayer(layer)
   }
 }

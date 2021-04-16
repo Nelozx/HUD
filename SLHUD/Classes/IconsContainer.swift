@@ -83,11 +83,6 @@ extension IconsContainer {
     case .default:
       addArrangedSubview(activityView)
       makeActivityConstraints()
-    case .ring:
-      addArrangedSubview(animateView)
-      makeAnimatinViewConstraints()
-      layoutIfNeeded()
-      animationCircleStrokeSpin(animateView)
     case .frames(let images, let duration, let repeatCount):
       addArrangedSubview(gifView)
       if images.count <= 0 { return}
@@ -96,11 +91,11 @@ extension IconsContainer {
       gifView.animationDuration = duration
       gifView.animationRepeatCount = repeatCount
       gifView.startAnimating()
-    case .lineScaling:
+    case .ring, .lineScaling, .singleCirclePulse:
       addArrangedSubview(animateView)
       makeAnimatinViewConstraints()
       layoutIfNeeded()
-      animationLineScaling(animateView)
+      animate(with: type, in: animateView)
     }
   }
 }

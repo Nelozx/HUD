@@ -114,7 +114,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
       style.titleColor = .systemGreen
       HUD.show(.loading(.ring), style: style)
     case 5:
-      HUD.show(.loading(.lineScaling))
+      HUD.show(.loading(.singleCirclePulse))
       self.navigationController?.pushViewController(NextViewViewController(), animated: true)
     case 6:
       HUD.show(.succeed())

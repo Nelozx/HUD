@@ -51,6 +51,7 @@ extension HUD {
     case `default`
     case ring
     case lineScaling
+    case singleCirclePulse
     case frames(_ images: [UIImage], _ duration: TimeInterval, _ repeatCount: Int)
   }
 }
