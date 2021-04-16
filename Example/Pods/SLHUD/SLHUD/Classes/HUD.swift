@@ -11,10 +11,7 @@ import UIKit
 extension HUD {
   
   /// 展示
-  /// - Parameters:
-  ///   - case: .toast & .custom & .progerss & .loading & status
-  ///   - superView: 父层， 默认在window上
-  ///   - style: 配置风格、包含字体颜色、交互影响、遮罩颜色
+  /// - Parameter case: Toast & loading & progress & custom
   public class func show(_ case: Case, for superView: UIView = UIWindow.key,
                          style: Style = .default) {
     shared.show(`case`, for: superView, style: style)
@@ -28,21 +25,14 @@ extension HUD {
   
   /// 展示的情况
   public enum Case {
-    /// 消息弹窗(Toast)
+    /// 消息弹窗(Toast) 必穿文字
     case toast(_ desc: String)
-    /// 活动指示器
     case loading(_ type: LoadingType = .default, desc: String = "")
-    /// 进度条 在handler中去更新progress
     case progress(_ style: ProgressView.Style = .default, handler: ProgressView.ProgressViewHandler)
-    /// 自定义 在size确定大小, UIImageView & UILabel ... 默认为内容的大小
     case custom(_ view: UIView, size: CGSize = .zero)
-    /// 成功状态
     case succeed(_ desc: String = "")
-    /// 失败状态
     case error(_ desc: String = "")
-    /// 警示状态
     case warning(_ desc: String = "")
-    /// 情报状态
     case info(_ desc: String = "")
   }
   
@@ -53,6 +43,8 @@ extension HUD {
     case lineScaling
     case frames(_ images: [UIImage], _ duration: TimeInterval, _ repeatCount: Int)
   }
+  
+  
 }
 
 public class HUD: UIView {
@@ -127,7 +119,7 @@ extension HUD {
     case .toast: style.isInteraction = false
     default: break
     }
-    backgroundColor = style.isInteraction ? style.maskColor : .clear
+    backgroundColor = style.isInteraction ? style.maskColor : .white
   }
   private func setupUI() {
     switch `case` {
@@ -143,27 +135,9 @@ extension HUD {
       self.contentView = contentView
       addSubview(contentView)
       makeCustomViewConstraints(size: size)
+      makeConstraints()
     }
-    addGestureRecognizer()
     animation()
-  }
-  
-  
-  private func addGestureRecognizer() {
-    if style.isTapMaskDismiss && style.isInteraction {
-      addGestureRecognizer(
-        UITapGestureRecognizer(target: self, action: #selector(tapToDissmiss))
-      )
-    }
-    if style.isTapContentDismiss {
-      contentView?.addGestureRecognizer(
-        UITapGestureRecognizer(target: self, action: #selector(tapToDissmiss))
-      )
-    }
-  }
-  
-  @objc private func tapToDissmiss() {
-    HUD.dismiss()
   }
   
   private func makeContentView() {
@@ -181,14 +155,10 @@ extension HUD {
     guard let contentView = contentView else {return}
     switch `case` {
     case .toast:
-      let contentH = contentView.bounds.size.height
-      if contentH > 100 {
-        contentView.layer.cornerRadius = style.cornerRadius ?? 5
-      } else {
-        contentView.layer.cornerRadius = style.cornerRadius ??
-          (contentH * 0.5)
-      }
-    case .custom: break
+      contentView.layer.cornerRadius = style.cornerRadius ??
+        (contentView.bounds.size.height * 0.5)
+    case .custom:
+      break
     default:
       contentView.layer.cornerRadius = style.cornerRadius ?? 5
     }
@@ -268,27 +238,16 @@ extension HUD {
 // MARK: Style
 extension HUD {
   public struct Style {
-    public init() {}
     public static var `default` = Style()
-    /// 图标颜色
+    public init() {}
     public var iconColor: UIColor = .white
-    /// HUD背景色
     public var contentColor = UIColor(red: 140/225, green: 140/225, blue: 140/225, alpha: 1.0)
-    /// 遮罩的颜色
     public var maskColor: UIColor = .clear
-    /// 是否影响交互
     public var isInteraction: Bool = true
-    /// 展示的时长
     public var duration: TimeInterval = .auto
-    /// HUD的圆角半径
     public var cornerRadius: CGFloat?
     public var titleColor: UIColor = .white
     public var detailColor: UIColor = .white
-    
-    /// 点击遮罩消失
-    public var isTapMaskDismiss: Bool = false
-    /// 点击内容消失
-    public var isTapContentDismiss: Bool = false
   }
 }
 

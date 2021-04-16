@@ -16,24 +16,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var desc = ""
   }
   
-  
   private var models: [Model] = [
     Model(desc: "⏏️: 自定义样式的消息弹窗"),
-    Model(desc: "⏏️: 基础消息弹窗"),
+    Model(desc: "⏏️: 基础消息弹窗添加在当前view"),
     Model(desc: "⏏️: 自定义视图"),
     Model(desc: "⏏️: 系统样式的活动指示器"),
     Model(desc: "⏏️: 转圈活动指示器"),
     Model(desc: "⏏️: 自定义活动指示器"),
     Model(desc: "⏏️: 成功"),
-    Model(desc: "⏏️: 失败"),
+    Model(desc: "⏏️: 进度 + 失败"),
     Model(desc: "⏏️: 进度"),
     Model(desc: "⏏️: 键盘遮挡处理"),
   ]
 
   @IBOutlet weak var tableView: UITableView!
   override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    super.viewDidLoad()
+
+  }
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
@@ -67,8 +67,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
   
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    // 综合成为整体性质，无法单独描述各个粒子的性质，只能描述整体系统的性质，则称这现象为量子缠结或量子纠缠（quantum entanglement）
-    HUD.show(.toast("当几个粒子在彼此相互作用后，由于各个粒子所拥有的特性已综合成为整体性质，无法单独描述各个粒子的性质，只能描述整体系统的性质，则称这现象为量子缠结或量子纠缠（quantum entanglement）"))
+    HUD.show(.toast("当几个粒子在彼此相互作用后，由于各个粒子所拥有的特性已综合成为整体性质，无法单独描述各个粒子的性质，只能描述整体系统的性质，则称这现象为量子缠结或量子纠缠（quantum entanglement），当几个粒子在彼此相互作用后，由于各个粒子所拥有的特性已综合成为整体性质，无法单独描述各个粒子的性质，只能描述整体系统的性质，则称这现象为量子缠结或量子纠缠（quantum entanglement）"))
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -88,16 +87,26 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
       style.maskColor = UIColor.gray.withAlphaComponent(0.5)
       style.contentColor = UIColor.red.withAlphaComponent(0.5)
       style.titleColor = .green
-      HUD.show(.toast("验证码复制失败"), style: style)
+      style.isTapContentDismiss = true
+      style.isTapMaskDismiss = true
+      HUD.show(.toast("验证码复制失败-验证码复制失败"), style: style)
       break
     case 1:
       HUD.show(.toast("评论成功"), for: self.view)
     case 2:
+      var style = HUD.Style()
+      style.isInteraction = false
+      style.maskColor = .red
       let view = UIView()
       view.backgroundColor = .cyan
-      HUD.show(.custom(view, size: CGSize(width: 200, height: 200)))
+      view.layer.cornerRadius = 10
+      HUD.show(.custom(view, size: CGSize(width: 100, height: 400)), style: style)
     case 3:
-      HUD.show(.loading(desc: "加载中..."))
+      var style = HUD.Style()
+      style.isInteraction = false
+      style.maskColor = UIColor.red
+      style.isTapContentDismiss = true
+      HUD.show(.loading(desc: "加载中..........................加载中........................加载中........................End") ,style: style)
     case 4:
       var style = HUD.Style()
       style.maskColor = UIColor.gray.withAlphaComponent(0.5)
@@ -106,10 +115,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
       HUD.show(.loading(.ring), style: style)
     case 5:
       HUD.show(.loading(.lineScaling))
+      self.navigationController?.pushViewController(NextViewViewController(), animated: true)
     case 6:
       HUD.show(.succeed())
     case 7:
-      HUD.show(.error())
+      HUD.show(.loading())
+      DispatchQueue.main.asyncAfter(deadline: .now()+5) {
+        HUD.show(.error())
+      }
     case 8:
       HUD.show(.progress(handler: {[weak self] (progressView) in
         guard let self = self else {
@@ -120,11 +133,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     default:
       break
     }
-    
   }
   
   private func run(with progressView: ProgressView?) {
-    
     guard let progressView = progressView  else {
       return
     }

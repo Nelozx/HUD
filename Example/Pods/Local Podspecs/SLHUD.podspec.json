@@ -1,15 +1,15 @@
 {
   "name": "SLHUD",
   "version": "1.0.0",
-  "summary": "A short description of SLHUD.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "Toast & Loading & progress & custom ++",
+  "description": "Do yourself with Toast & Loading & progress & custom ++",
   "homepage": "https://git.saloontech.com/iOS/SLHUD",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "nelozx@163.com": "nelozx@163.com"
+    "Nelo": "nelozx@163.com"
   },
   "source": {
     "git": "https://git.saloontech.com/iOS/SLHUD.git",

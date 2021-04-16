@@ -37,34 +37,11 @@ extension HUD {
   }
   
   func makeCustomViewConstraints(size: CGSize) {
-    guard let superview = superview,
-          let contentView = contentView else {return}
-    if style.isInteraction {
-      NSLayoutConstraint.activate([
-        topAnchor.constraint(equalTo: superview.topAnchor),
-        bottomAnchor.constraint(equalTo: superview.bottomAnchor),
-        leadingAnchor.constraint(equalTo: superview.leadingAnchor),
-        trailingAnchor.constraint(equalTo: superview.trailingAnchor),
-        contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-        contentView.centerYAnchor.constraint(equalTo: centerYAnchor),
-      ])
-    }else{
-      NSLayoutConstraint.activate([
-        centerXAnchor.constraint(equalTo: superview.centerXAnchor),
-        centerYAnchor.constraint(equalTo: superview.centerYAnchor),
-        contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        contentView.topAnchor.constraint(equalTo: topAnchor),
-        contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        contentView.trailingAnchor.constraint(equalTo: trailingAnchor)
-      ])
-    }
-    
-    if size != .zero {
-      NSLayoutConstraint.activate([
-        contentView.widthAnchor.constraint(equalToConstant: size.width),
-        contentView.heightAnchor.constraint(equalToConstant: size.height),
-      ])
-    }
+    guard let contentView = contentView, size != .zero else {return}
+    NSLayoutConstraint.activate([
+      contentView.widthAnchor.constraint(equalToConstant: size.width),
+      contentView.heightAnchor.constraint(equalToConstant: size.height),
+    ])
   }
   
   private func makeCommonConstraints() {

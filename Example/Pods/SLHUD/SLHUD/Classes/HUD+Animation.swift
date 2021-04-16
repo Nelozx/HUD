@@ -26,7 +26,7 @@ extension HUD {
     let animote = CABasicAnimation(keyPath: "opacity")
     animote.duration = 0.3
     animote.isRemovedOnCompletion = false
-    animote.fillMode = .forwards
+    animote.fillMode = isHidden ? .backwards : .forwards
     animote.fromValue = isHidden ? 1 : 0
     animote.toValue = isHidden ? 0 : 1
     animote.delegate = isHidden ? self : nil

@@ -57,9 +57,10 @@ extension Container {
       } else {
         makeJointContainer()
         makeJointConstraints()
-        textContainer.titleLabel.preferredMaxLayoutWidth = 100
       }
-    case .custom:break
+      break
+    default:
+      break
     }
   }
 }

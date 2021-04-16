@@ -1,4 +1,4 @@
-#source 'https://git.saloontech.com/iOS/Share-Pods/Specs.git'
+source 'https://git.saloontech.com/iOS/Share-Pods/Specs.git'
 
 
 
@@ -8,7 +8,7 @@ platform :ios, '11.0'
 
 target 'SLHUD_Example' do
   pod 'SLHUD', :path => '../'
-#  pod 'LookinServer'
+#  pod 'SLHUD'
   target 'SLHUD_Tests' do
   pod 'Quick'
   pod 'Nimble'
