@@ -37,7 +37,7 @@ extension HUD {
   }
   
   func makeCustomViewConstraints(size: CGSize) {
-    guard let contentView = contentView else {return}
+    guard let contentView = contentView, size != .zero else {return}
     NSLayoutConstraint.activate([
       contentView.widthAnchor.constraint(equalToConstant: size.width),
       contentView.heightAnchor.constraint(equalToConstant: size.height),

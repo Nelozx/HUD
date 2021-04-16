@@ -29,7 +29,7 @@ extension HUD {
     case toast(_ desc: String)
     case loading(_ type: LoadingType = .default, desc: String = "")
     case progress(_ style: ProgressView.Style = .default, handler: ProgressView.ProgressViewHandler)
-    case custom(_ view: UIView, size: CGSize)
+    case custom(_ view: UIView, size: CGSize = .zero)
     case succeed(_ desc: String = "")
     case error(_ desc: String = "")
     case warning(_ desc: String = "")
