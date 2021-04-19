@@ -33,7 +33,7 @@ extension HUD {
     /// 活动指示器
     case loading(_ type: LoadingType = .default, desc: String = "")
     /// 进度条 在handler中去更新progress
-    case progress(_ style: ProgressView.Style = .default, handler: ProgressView.ProgressViewHandler)
+    case progress(_ style: ProgressView.Style = .default, desc: String = "", handler: ProgressView.ProgressViewHandler)
     /// 自定义 在size确定大小, UIImageView & UILabel ... 默认为内容的大小
     case custom(_ view: UIView, size: CGSize = .zero)
     /// 成功状态
@@ -70,9 +70,6 @@ public class HUD: UIView {
   private var durations: (min: TimeInterval, max: TimeInterval) = (min: 1.5, max: 10)
   private let keyboardWillShow  = UIResponder.keyboardWillShowNotification
   private let keyboardWillHide  = UIResponder.keyboardWillHideNotification
-  private let keyboardDidShow    = UIResponder.keyboardDidShowNotification
-  private let keyboardDidHide    = UIResponder.keyboardDidHideNotification
-  private let orientationDidChange = UIDevice.orientationDidChangeNotification
   
   convenience private init() {
     self.init(frame: UIScreen.main.bounds)
@@ -114,6 +111,7 @@ extension HUD {
     interactionCase()
     setupUI()
     autoDisssCase()
+    setupNotifications()
   }
   
   private func autoDisssCase() {
@@ -131,13 +129,13 @@ extension HUD {
     backgroundColor = style.isInteraction ? style.maskColor : .clear
   }
   private func setupUI() {
+    self.desc = ""
     switch `case` {
     case .toast(let desc), .loading(_ ,let desc),
          .info(let desc), .error(let desc),
-         .succeed(let desc), .warning(let desc):
+         .succeed(let desc), .warning(let desc),
+         .progress(_, let desc, _):
       self.desc = desc
-      makeContentView()
-    case .progress:
       makeContentView()
     case .custom(let contentView, let size):
       contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -204,67 +202,37 @@ extension HUD {
   
   private func setupNotifications() {
     
-    if !style.isInteraction {
-      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardWillShow, object: nil)
-      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardWillHide, object: nil)
-      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardDidShow, object: nil)
-      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardDidHide, object: nil)
-      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: orientationDidChange, object: nil)
-    }
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: keyboardWillShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: keyboardWillHide, object: nil)
+    
   }
   
-  @objc private func handlerPosition(_ notification: Notification? = nil) {
+  @objc func keyboardWillShowNotification(_ note: Notification) {
     
-    var heightKeyboard: CGFloat = 0
-    var animationDuration: TimeInterval = 0
-    
-    if let notification = notification {
-      let frameKeyboard = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect ?? CGRect.zero
-      animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
-      
-      if (notification.name == keyboardWillShow) || (notification.name == keyboardDidShow) {
-        heightKeyboard = frameKeyboard.size.height
-      } else if (notification.name == keyboardWillHide) || (notification.name == keyboardDidHide) {
-        heightKeyboard = 0
-      } else {
-        heightKeyboard = keyboardHeight()
-      }
-    } else {
-      heightKeyboard = keyboardHeight()
+    guard let userInfo = note.userInfo,
+          let keyboradRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+          let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+          let contentView = contentView else {
+      return
     }
-    
-    let screen = UIScreen.main.bounds
-    let center = CGPoint(x: screen.size.width/2, y: (screen.size.height-heightKeyboard)/2)
-    
-    UIView.animate(withDuration: animationDuration, delay: 0, options: .allowUserInteraction, animations: {
-      self.center = center
-    }, completion: nil)
-  }
   
-  private func keyboardHeight() -> CGFloat {
-    
-    if let keyboardWindowClass = NSClassFromString("UIRemoteKeyboardWindow"),
-       let inputSetContainerView = NSClassFromString("UIInputSetContainerView"),
-       let inputSetHostView = NSClassFromString("UIInputSetHostView") {
-      
-      for window in UIApplication.shared.windows {
-        if window.isKind(of: keyboardWindowClass) {
-          for firstSubView in window.subviews {
-            if firstSubView.isKind(of: inputSetContainerView) {
-              for secondSubView in firstSubView.subviews {
-                if secondSubView.isKind(of: inputSetHostView) {
-                  return secondSubView.frame.size.height
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    return 0
+   
+
+    print(keyboradRect.minY)
+    print(contentView.bounds.height)
+//    let offsetY = keyboradRect.minY - self.frame.height
+//
+//    UIView.animate(withDuration: duration) {
+//      self.transform = CGAffineTransform(translationX: 0, y: offsetY)
+//    }
   }
+}
+
+func keyboardWillHideNotification(_ note: Notification) {
   
 }
+
+
 
 // MARK: Style
 extension HUD {
