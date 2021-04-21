@@ -67,7 +67,7 @@ extension IconsContainer {
       makeAnimatinViewConstraints()
       layoutIfNeeded()
       animatedIconFailed(animateView)
-    case .progress(let style, let handler):
+    case .progress(let style, _, let handler):
       progressView.model = style
       progressView.handler = handler
       addArrangedSubview(progressView)
