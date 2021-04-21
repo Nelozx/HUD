@@ -9,6 +9,7 @@
 import UIKit
 import SLHUD
 
+
 class NextViewViewController: UIViewController {
   
   override func viewDidLoad() {

@@ -113,24 +113,11 @@ extension Container {
 
 extension IconsContainer {
   
-  func makeActivityConstraints() {
+  func makeConstraints(with view: UIView) {
+    view.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      activityView.heightAnchor.constraint(equalToConstant: 60),
-      activityView.widthAnchor.constraint(equalToConstant: 60)
-    ])
-  }
-  
-  func makeAnimatinViewConstraints() {
-    NSLayoutConstraint.activate([
-      animateView.heightAnchor.constraint(equalToConstant: 60),
-      animateView.widthAnchor.constraint(equalToConstant: 60)
-    ])
-  }
-  
-  func makeProgressViewConstraints() {
-    NSLayoutConstraint.activate([
-      progressView.heightAnchor.constraint(equalToConstant: 60),
-      progressView.widthAnchor.constraint(equalToConstant: 60)
+      view.heightAnchor.constraint(equalToConstant: 60),
+      view.widthAnchor.constraint(equalToConstant: 60)
     ])
   }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import SLHUD
+import Lottie
 
 
 class ViewController: UIViewController {
@@ -30,6 +31,8 @@ class ViewController: UIViewController {
     Model(desc: "⏏️: 成功状态"),
     Model(desc: "⏏️: 活动指示器 + 失败状态"),
     Model(desc: "⏏️: 进度"),
+    Model(desc: "⏏️: Lottie动画"),
+    Model(desc: "⏏️: 带title的Lottie动画")
   ]
 
   @IBOutlet weak var tableView: UITableView!
@@ -127,6 +130,24 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         }
         self.run(with: progressView)
       }))
+      
+    case 10:
+      var style = HUD.Style()
+      style.isTapContentDismiss = true
+      let animtionView = AnimationView(name: "123")
+      animtionView.animationSpeed = 1
+      animtionView.loopMode = .loop
+      animtionView.play()
+      animtionView.backgroundColor = UIColor.gray.withAlphaComponent(0.8)
+      HUD.show(.custom(animtionView, size: CGSize(width: 60, height: 60)), style: style)
+    case 11:
+      var style = HUD.Style()
+      style.isTapContentDismiss = true
+      let animtionView = AnimationView(name: "123")
+      animtionView.animationSpeed = 1
+      animtionView.loopMode = .loop
+      animtionView.play()
+      HUD.show(.loading(.custom(animtionView), desc: "这里是描述"), style: style)
     default:
       break
     }

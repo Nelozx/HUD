@@ -52,6 +52,8 @@ extension HUD {
     case ring
     case lineScaling
     case singleCirclePulse
+    /// 自定义带东湖的视图，比如加入Lottie的 animateView
+    case custom(_ animationView: UIView)
     case frames(_ images: [UIImage], _ duration: TimeInterval, _ repeatCount: Int)
   }
 }
@@ -200,37 +202,68 @@ extension HUD {
     timer?.invalidate()
   }
   
+  
   private func setupNotifications() {
     
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: keyboardWillShow, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: keyboardWillHide, object: nil)
-    
-  }
-  
-  @objc func keyboardWillShowNotification(_ note: Notification) {
-    
-    guard let userInfo = note.userInfo,
-          let keyboradRect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
-          let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
-          let contentView = contentView else {
-      return
+    if !style.isInteraction {
+      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardWillShow, object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(handlerPosition(_:)), name: keyboardWillHide, object: nil)
     }
-  
-   
+  }
 
-    print(keyboradRect.minY)
-    print(contentView.bounds.height)
-//    let offsetY = keyboradRect.minY - self.frame.height
-//
-//    UIView.animate(withDuration: duration) {
-//      self.transform = CGAffineTransform(translationX: 0, y: offsetY)
-//    }
+  @objc private func handlerPosition(_ notification: Notification? = nil) {
+    
+    var heightKeyboard: CGFloat = 0
+    var animationDuration: TimeInterval = 0
+    
+    if let notification = notification {
+      let frameKeyboard = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect ?? CGRect.zero
+      animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
+      
+      if notification.name == keyboardWillShow{
+        heightKeyboard = frameKeyboard.size.height
+      } else if notification.name == keyboardWillHide {
+        heightKeyboard = 0
+      } else {
+        heightKeyboard = keyboardHeight()
+      }
+    } else {
+      heightKeyboard = keyboardHeight()
+    }
+    
+    let screen = UIScreen.main.bounds
+    let center = CGPoint(x: screen.size.width/2, y: (screen.size.height-heightKeyboard)/2)
+    
+    UIView.animate(withDuration: animationDuration, delay: 0, options: .allowUserInteraction, animations: {
+      self.center = center
+    }, completion: nil)
+  }
+
+  private func keyboardHeight() -> CGFloat {
+    
+    if let keyboardWindowClass = NSClassFromString("UIRemoteKeyboardWindow"),
+       let inputSetContainerView = NSClassFromString("UIInputSetContainerView"),
+       let inputSetHostView = NSClassFromString("UIInputSetHostView") {
+      
+      for window in UIApplication.shared.windows {
+        if window.isKind(of: keyboardWindowClass) {
+          for firstSubView in window.subviews {
+            if firstSubView.isKind(of: inputSetContainerView) {
+              for secondSubView in firstSubView.subviews {
+                if secondSubView.isKind(of: inputSetHostView) {
+                  return secondSubView.frame.size.height
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return 0
   }
 }
 
-func keyboardWillHideNotification(_ note: Notification) {
-  
-}
+
 
 
 

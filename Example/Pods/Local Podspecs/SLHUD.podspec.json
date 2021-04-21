@@ -1,6 +1,6 @@
 {
   "name": "SLHUD",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "summary": "Toast & Loading & progress & custom ++",
   "description": "Do yourself with Toast & Loading & progress & custom ++",
   "homepage": "https://git.saloontech.com/iOS/SLHUD",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://git.saloontech.com/iOS/SLHUD.git",
-    "tag": "1.0.0"
+    "tag": "1.0.2"
   },
   "platforms": {
     "ios": "11.0"

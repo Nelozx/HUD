@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040A7B08262FFA9100C26DFE /* 123.json in Resources */ = {isa = PBXBuildFile; fileRef = 040A7B05262FFA9100C26DFE /* 123.json */; };
+		040A7B09262FFA9100C26DFE /* 1234.json in Resources */ = {isa = PBXBuildFile; fileRef = 040A7B06262FFA9100C26DFE /* 1234.json */; };
+		040A7B0A262FFA9100C26DFE /* 12345.json in Resources */ = {isa = PBXBuildFile; fileRef = 040A7B07262FFA9100C26DFE /* 12345.json */; };
 		047C223C2629715900040055 /* NextViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C223B2629715900040055 /* NextViewViewController.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -29,6 +32,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		040A7B05262FFA9100C26DFE /* 123.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 123.json; sourceTree = "<group>"; };
+		040A7B06262FFA9100C26DFE /* 1234.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 1234.json; sourceTree = "<group>"; };
+		040A7B07262FFA9100C26DFE /* 12345.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 12345.json; sourceTree = "<group>"; };
 		047C223B2629715900040055 /* NextViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextViewViewController.swift; sourceTree = "<group>"; };
 		07A2C57913EE0FCEDE98FCA3 /* Pods-SLHUD_Example-SLHUD_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SLHUD_Example-SLHUD_Tests.release.xcconfig"; path = "Target Support Files/Pods-SLHUD_Example-SLHUD_Tests/Pods-SLHUD_Example-SLHUD_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		450E6DE42FF7688A989EA896 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -71,6 +77,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040A7B04262FFA9100C26DFE /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				040A7B05262FFA9100C26DFE /* 123.json */,
+				040A7B06262FFA9100C26DFE /* 1234.json */,
+				040A7B07262FFA9100C26DFE /* 12345.json */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		05BA3620C9680AF33C57056F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +122,7 @@
 		607FACD21AFB9204008FA782 /* Example for SLHUD */ = {
 			isa = PBXGroup;
 			children = (
+				040A7B04262FFA9100C26DFE /* Resource */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				047C223B2629715900040055 /* NextViewViewController.swift */,
@@ -254,7 +271,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				040A7B0A262FFA9100C26DFE /* 12345.json in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				040A7B08262FFA9100C26DFE /* 123.json in Resources */,
+				040A7B09262FFA9100C26DFE /* 1234.json in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,10 +341,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SLHUD_Example/Pods-SLHUD_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SLHUD/SLHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SLHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -339,12 +361,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SLHUD_Example-SLHUD_Tests/Pods-SLHUD_Example-SLHUD_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SLHUD/SLHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SLHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Quick.framework",
 			);

@@ -1,14 +1,18 @@
 PODS:
+  - lottie-ios (3.2.1)
   - Nimble (9.0.0)
   - Quick (3.1.2)
-  - SLHUD (1.0.0)
+  - SLHUD (1.0.2)
 
 DEPENDENCIES:
+  - lottie-ios
   - Nimble
   - Quick
   - SLHUD (from `../`)
 
 SPEC REPOS:
+  https://git.saloontech.com/iOS/Share-Pods/Specs.git:
+    - lottie-ios
   trunk:
     - Nimble
     - Quick
@@ -18,10 +22,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  lottie-ios: 6b59d47774b2bca28308c62f98545c0c512ad61f
   Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
   Quick: 60f0ea3b8e0cfc0df3259a5c06a238ad8b3c46e0
-  SLHUD: 992dd425c034d2851c201a3fe738699a728ed775
+  SLHUD: c6ccb92928b527ab234c60c6ee36ce226b7bf170
 
-PODFILE CHECKSUM: 7c09d0ea20f743315bc048d919271735a9712789
+PODFILE CHECKSUM: d752342d3c342fb725883062c22db2b572a65157
 
 COCOAPODS: 1.10.1

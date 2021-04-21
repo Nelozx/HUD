@@ -59,20 +59,19 @@ extension IconsContainer {
       break
     case .succeed:
       addArrangedSubview(animateView)
-      makeAnimatinViewConstraints()
+      makeConstraints(with: animateView)
       layoutIfNeeded()
       animatedIconSucceed(animateView)
     case .error:
       addArrangedSubview(animateView)
-      makeAnimatinViewConstraints()
+      makeConstraints(with: animateView)
       layoutIfNeeded()
       animatedIconFailed(animateView)
     case .progress(let style, _, let handler):
       progressView.model = style
       progressView.handler = handler
       addArrangedSubview(progressView)
-      makeProgressViewConstraints()
-      
+      makeConstraints(with: progressView)
     default:
       break
     }
@@ -82,7 +81,7 @@ extension IconsContainer {
     switch type {
     case .default:
       addArrangedSubview(activityView)
-      makeActivityConstraints()
+      makeConstraints(with: activityView)
     case .frames(let images, let duration, let repeatCount):
       addArrangedSubview(gifView)
       if images.count <= 0 { return}
@@ -93,9 +92,12 @@ extension IconsContainer {
       gifView.startAnimating()
     case .ring, .lineScaling, .singleCirclePulse:
       addArrangedSubview(animateView)
-      makeAnimatinViewConstraints()
+      makeConstraints(with: animateView)
       layoutIfNeeded()
       animate(with: type, in: animateView)
+    case .custom(let animateView):
+      addArrangedSubview(animateView)
+      makeConstraints(with: animateView)
     }
   }
 }
